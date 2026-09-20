@@ -115,7 +115,8 @@ export function Game({ room, onSelectStat, onSelectDefendingCard, onResetGame }:
                   <h2 className="text-2xl font-bold text-white mb-6 text-center text-orange-400">Wähle eine Karte zur Verteidigung</h2>
                   <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-6 w-full">
                     {room.players[room.defendingPlayerIndex!].cards.map(card => (
-                      <div key={card.id} className="cursor-pointer hover:-translate-y-2 transition-transform" onClick={() => onSelectDefendingCard(card.id)}>
+                      <div key={card.id} className="cursor-pointer hover:-translate-y-2 transition-transform relative" onClick={() => onSelectDefendingCard(card.id)}>
+                        <div className="absolute inset-0 z-10"></div>
                         <Card card={card} isSelectable={false} />
                       </div>
                     ))}
