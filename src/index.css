@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --color-flugzeug-dark: #0f172a;
+  --color-flugzeug-card: #1e293b;
+  --color-flugzeug-accent: #38bdf8;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background-color: var(--color-flugzeug-dark);
+  color: white;
+}
