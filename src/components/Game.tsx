@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { Room, AirplaneCard } from '../types';
-import { Card, CardBack } from './Card';
+import { Card } from './Card';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Props {

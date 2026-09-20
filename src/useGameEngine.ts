@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import type { AirplaneCard, Player, GameState, Room } from './types';
+import type { AirplaneCard, Player, Room } from './types';
 import { deck } from './deck';
 
 const shuffle = (array: any[]) => {
@@ -170,6 +170,8 @@ export function useGameEngine() {
   };
 
   const evaluateTrick = useCallback((statKey: keyof AirplaneCard['stats'], winners: number[]) => {
+    // statKey is preserved in signature for future extension, suppress unused
+    void statKey;
     setRoom(r => {
       // PURE state update - don't mutate arrays with shift()!
       const players = r.players.map(p => ({ 
