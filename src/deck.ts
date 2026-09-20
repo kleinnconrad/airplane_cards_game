@@ -25,7 +25,7 @@ const pax = (v: number) => ({ value: v, higherIsBetter: true });
 const thrust = (v: number) => ({ value: v, higherIsBetter: true });
 const year = (v: number) => ({ value: v, higherIsBetter: false });
 
-const getLocalImage = (id: string) => `/images/${id}.jpg`;
+const getLocalImage = (id: string) => `${import.meta.env.BASE_URL}images/${id}.jpg`;
 
 export const deck: AirplaneCard[] = [
   {
