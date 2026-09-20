@@ -1,7 +1,9 @@
 name: Manual Deploy to GitHub Pages
 
 on:
-  # This enables the "Run workflow" button in the GitHub Actions UI
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 # We need write permissions to push to the gh-pages branch
