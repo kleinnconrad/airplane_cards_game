@@ -1,13 +1,13 @@
-# Airplane Top Trumps (Flugzeug Trumpfen) ✈️
+# Airplane card game (Flugzeug Trumpfen)
 
-A modern, highly tactical web-based "Hot-Seat" multiplayer implementation of the classic Top Trumps card game, featuring 32 spectacular AI-generated aircraft cards. Built with React, Vite, and Tailwind CSS.
+A modern, highly tactical web-based "Hot-Seat" multiplayer implementation of the classic card game, featuring 32 spectacular AI-generated aircraft cards. Built with React, Vite, and Tailwind CSS.
 
-## 📸 The Game
+## The Game
 Take control of 32 of the most iconic aircraft in aviation history — from historical pioneers like the Wright Flyer to modern giants like the Airbus A380 and supersonic legends like the SR-71 Blackbird.
 
 Players compete on a single screen (Hot-Seat) to win all cards by choosing the strongest statistics of their top cards.
 
-## 📜 Game Rules
+## Game Rules
 
 ### Classic Mechanics
 1. **Dealing:** The deck of 32 cards is shuffled and distributed evenly among the players.
@@ -33,7 +33,7 @@ The game ends when one player successfully collects all 32 cards!
 
 ---
 
-## 🚀 How to Start the Game
+## How to Start the Game
 
 Since the game is completely local and runs entirely in your browser, setup is extremely simple:
 
