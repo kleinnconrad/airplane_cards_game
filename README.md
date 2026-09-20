@@ -1,18 +1,18 @@
-# Airplane card game (Flugzeug Trumpfen)
+# Airplane card game (Flugzeug trumpfen)
 
 A modern, highly tactical web-based "Hot-Seat" multiplayer implementation of the classic card game, featuring 32 spectacular AI-generated aircraft cards. Built with React, Vite, and Tailwind CSS.
 
-## The Game
+## The game
 Take control of 32 of the most iconic aircraft in aviation history — from historical pioneers like the Wright Flyer to modern giants like the Airbus A380 and supersonic legends like the SR-71 Blackbird.
 
 Players compete on a single screen (Hot-Seat) to win all cards by choosing the strongest statistics of their top cards.
 
-## Game Rules
+## Game rules
 
-### Classic Mechanics
+### Classic mechanics
 1. **Dealing:** The deck of 32 cards is shuffled and distributed evenly among the players.
-2. **Turn Selection:** The active player looks at their top card and selects a statistic (e.g., Top Speed, Range, Thrust) they believe will beat the opponent's top card.
-3. **Winning the Trick:** The player with the better value wins both cards and places them at the bottom of their deck. The winner becomes the active player for the next round.
+2. **Turn selection:** The active player looks at their top card and selects a statistic (e.g., Top Speed, Range, Thrust) they believe will beat the opponent's top card.
+3. **Winning the trick:** The player with the better value wins both cards and places them at the bottom of their deck. The winner becomes the active player for the next round.
    - *Note:* For all statistics, **Higher is Better**, with the exception of the **First Flight Year**, where **Lower (older) is Better**!
 
 ### Tie-Breaker (Stechen)
@@ -23,17 +23,17 @@ If both players have the exact same value for a chosen statistic:
 - If there is another tie, the new cards are added to the pot.
 - The first player to win a subsequent trick takes their trick cards **PLUS all accumulated cards in the Pot**.
 
-### The "Endgame" Rule (<= 3 Cards)
+### The "Endgame" rule (<= 3 Cards)
 To add a layer of deep strategy and prevent the end of the game from being purely based on luck, a special tactical rule is triggered when a player's hand dwindles:
-- **Active Player:** If you have 3 or fewer cards remaining, you no longer have to play your top card! You will see all your remaining cards side-by-side and can choose *which card* and *which stat* to attack with.
-- **Defending Player:** If the defending player has 3 or fewer cards, the game employs a "Hidden Screen" mechanic. The attacker is asked to look away, and the defender gets to securely choose their defending card from their remaining hand to counter the attack.
+- **Active player:** If you have 3 or fewer cards remaining, you no longer have to play your top card! You will see all your remaining cards side-by-side and can choose *which card* and *which stat* to attack with.
+- **Defending player:** If the defending player has 3 or fewer cards, the game employs a "Hidden Screen" mechanic. The attacker is asked to look away, and the defender gets to securely choose their defending card from their remaining hand to counter the attack.
 
 ### Victory
 The game ends when one player successfully collects all 32 cards!
 
 ---
 
-## How to Start the Game
+## How to start the game
 
 Since the game is completely local and runs entirely in your browser, setup is extremely simple:
 
