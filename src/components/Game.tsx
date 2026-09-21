@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import type { Room, AirplaneCard } from '../types';
+import type { Room, GameCard } from '../types';
 import { Card } from './Card';
 import { motion, AnimatePresence } from 'framer-motion';
+import { availableDecks } from '../decks';
 
 interface Props {
   room: Room;
-  onSelectStat: (stat: keyof AirplaneCard['stats'], cardId: string) => void;
+  onSelectStat: (stat: string, cardId: string) => void;
   onSelectDefendingCard: (cardId: string) => void;
   onNextRound: () => void;
   onResetGame: () => void;
@@ -21,7 +22,7 @@ export function Game({ room, onSelectStat, onSelectDefendingCard, onNextRound, o
     }
   }, [room.state]);
   if (room.state === 'GAME_OVER') {
-    const winner = room.players.find(p => p.cardsCount === 32) || room.players[room.winners[0]];
+    const winner = room.players.find(p => p.cardsCount > 0);
     return (
       <div className="min-h-screen bg-slate-950 p-4 flex flex-col items-center justify-center">
         <motion.div 
@@ -44,6 +45,7 @@ export function Game({ room, onSelectStat, onSelectDefendingCard, onNextRound, o
   }
 
   const activePlayer = room.players[room.activePlayerIndex];
+  const activeDeck = availableDecks[room.deckId as keyof typeof availableDecks];
 
   return (
     <div className="min-h-[100dvh] bg-slate-950 flex flex-col font-sans overflow-hidden">
@@ -104,7 +106,12 @@ export function Game({ room, onSelectStat, onSelectDefendingCard, onNextRound, o
               <div className="flex flex-wrap justify-center gap-4 pb-10">
                 {room.players.find(p => p.id === browsingPlayerId)?.cards.map(card => (
                   <div key={card.id} className="w-[140px] sm:w-[220px]">
-                    <Card card={card} isSelectable={false} />
+                    <Card 
+                      card={card} 
+                      isSelectable={false}
+                      statLabels={activeDeck.statLabels}
+                      statUnits={activeDeck.statUnits}
+                    />
                   </div>
                 ))}
               </div>
@@ -157,7 +164,12 @@ export function Game({ room, onSelectStat, onSelectDefendingCard, onNextRound, o
                     {room.players[room.defendingPlayerIndex!].cards.map(card => (
                       <div key={card.id} className="cursor-pointer hover:-translate-y-2 transition-transform relative" onClick={() => onSelectDefendingCard(card.id)}>
                         <div className="absolute inset-0 z-10"></div>
-                        <Card card={card} isSelectable={false} />
+                        <Card 
+                          card={card} 
+                          isSelectable={false}
+                          statLabels={activeDeck.statLabels}
+                          statUnits={activeDeck.statUnits}
+                        />
                       </div>
                     ))}
                   </div>
@@ -177,6 +189,8 @@ export function Game({ room, onSelectStat, onSelectDefendingCard, onNextRound, o
                        selectedStat={null}
                        onSelectStat={onSelectStat}
                        isWinner={false}
+                       statLabels={activeDeck.statLabels}
+                       statUnits={activeDeck.statUnits}
                      />
                    </div>
                  ))
@@ -189,6 +203,8 @@ export function Game({ room, onSelectStat, onSelectDefendingCard, onNextRound, o
                        selectedStat={null}
                        onSelectStat={onSelectStat}
                        isWinner={false}
+                       statLabels={activeDeck.statLabels}
+                       statUnits={activeDeck.statUnits}
                      />
                    </div>
                  )
@@ -217,6 +233,8 @@ export function Game({ room, onSelectStat, onSelectDefendingCard, onNextRound, o
                         isSelectable={false}
                         selectedStat={room.selectedStat}
                         isWinner={isWinner}
+                        statLabels={activeDeck.statLabels}
+                        statUnits={activeDeck.statUnits}
                       />
                     </motion.div>
                   )

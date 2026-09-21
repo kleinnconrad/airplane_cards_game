@@ -6,10 +6,13 @@ interface Props {
   room: Room;
   onAddPlayer: (name: string) => void;
   onRemovePlayer: (id: string) => void;
+  onSelectDeck: (deckId: string) => void;
   onStartGame: () => void;
 }
 
-export function Lobby({ room, onAddPlayer, onRemovePlayer, onStartGame }: Props) {
+import { availableDecks } from '../decks';
+
+export function Lobby({ room, onAddPlayer, onRemovePlayer, onSelectDeck, onStartGame }: Props) {
   const [name, setName] = useState('');
 
   const handleAdd = () => {
@@ -27,12 +30,37 @@ export function Lobby({ room, onAddPlayer, onRemovePlayer, onStartGame }: Props)
         className="max-w-md w-full bg-slate-900 rounded-2xl shadow-2xl border border-slate-800 p-8"
       >
         <div className="text-center mb-8">
-          <div className="text-6xl mb-4">✈️</div>
-          <h1 className="text-3xl font-black text-white tracking-tight">Flugzeug</h1>
+          <div className="text-6xl mb-4">✈️ / 🐍</div>
+          <h1 className="text-3xl font-black text-white tracking-tight">Karten</h1>
           <h1 className="text-3xl font-black text-sky-500 tracking-tight">Trumpfen</h1>
         </div>
 
         <div className="space-y-6">
+          
+          {/* Deck Selection */}
+          <div className="mb-6">
+            <h2 className="text-slate-400 font-bold uppercase tracking-wider text-sm mb-2">Spiel auswählen</h2>
+            <div className="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
+              {Object.values(availableDecks).map(deck => (
+                <button
+                  key={deck.id}
+                  onClick={() => onSelectDeck(deck.id)}
+                  className={`flex-1 min-w-[120px] p-3 rounded-xl border-2 transition-all ${
+                    room.deckId === deck.id 
+                      ? 'bg-sky-900/50 border-sky-500 shadow-[0_0_15px_rgba(56,189,248,0.3)]' 
+                      : 'bg-slate-800 border-slate-700 hover:border-slate-500'
+                  }`}
+                >
+                  <div className="font-bold text-white text-sm">{deck.name}</div>
+                </button>
+              ))}
+            </div>
+            {room.deckId && (
+              <p className="text-xs text-slate-400 mt-2 text-center">
+                {availableDecks[room.deckId as keyof typeof availableDecks]?.description}
+              </p>
+            )}
+          </div>
           <div className="space-y-3 mb-6">
             <h2 className="text-slate-400 font-bold uppercase tracking-wider text-sm mb-2">Spieler ({room.players.length}/4)</h2>
             {room.players.map((p) => (

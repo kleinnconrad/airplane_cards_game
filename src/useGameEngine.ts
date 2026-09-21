@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
-import type { AirplaneCard, Player, Room } from './types';
-import { deck } from './deck';
+import type { GameCard, Player, Room } from './types';
+import { availableDecks } from './decks';
 
 const shuffle = (array: any[]) => {
   let currentIndex = array.length, randomIndex;
@@ -21,7 +21,8 @@ export function useGameEngine() {
     activePlayerIndex: 0,
     pot: [],
     selectedStat: null,
-    winners: []
+    winners: [],
+    deckId: 'airplanes'
   });
 
   const addPlayer = (name: string) => {
@@ -49,8 +50,9 @@ export function useGameEngine() {
   const startGame = () => {
     if (room.players.length < 2) return;
     
-    const shuffledDeck = shuffle([...deck]);
-    const newPlayers = [...room.players].map(p => ({ ...p, cards: [] as AirplaneCard[] }));
+    const selectedDeck = availableDecks[room.deckId as keyof typeof availableDecks];
+    const shuffledDeck = shuffle([...selectedDeck.cards]);
+    const newPlayers = [...room.players].map(p => ({ ...p, cards: [] as GameCard[] }));
     
     let pIndex = 0;
     shuffledDeck.forEach(card => {
@@ -75,7 +77,11 @@ export function useGameEngine() {
     }));
   };
 
-  const computeWinners = (players: Player[], statKey: keyof AirplaneCard['stats']): number[] => {
+  const selectDeck = (deckId: string) => {
+    setRoom(r => ({ ...r, deckId }));
+  };
+
+  const computeWinners = (players: Player[], statKey: string): number[] => {
     let bestValue = -Infinity;
     let higherIsBetter = true;
     let winners: number[] = [];
@@ -100,7 +106,7 @@ export function useGameEngine() {
     return winners;
   };
 
-  const selectStat = (statKey: keyof AirplaneCard['stats'], cardId?: string) => {
+  const selectStat = (statKey: string, cardId?: string) => {
     const players = room.players.map(p => ({ ...p, cards: [...p.cards] }));
     const activePlayer = players[room.activePlayerIndex];
     
@@ -178,7 +184,7 @@ export function useGameEngine() {
     }
   };
 
-  const evaluateTrick = useCallback((statKey: keyof AirplaneCard['stats'], winners: number[]) => {
+  const evaluateTrick = useCallback((statKey: string, winners: number[]) => {
     // statKey is preserved in signature for future extension, suppress unused
     void statKey;
     setRoom(r => {
@@ -190,7 +196,7 @@ export function useGameEngine() {
       const newPot = [...r.pot];
       
       // Take top cards from the ORIGINAL state
-      const cardsInPlay = r.players.map(p => p.cards.length > 0 ? p.cards[0] : null).filter(Boolean) as AirplaneCard[];
+      const cardsInPlay = r.players.map(p => p.cards.length > 0 ? p.cards[0] : null).filter(Boolean) as GameCard[];
       newPot.push(...cardsInPlay);
       
       let nextActivePlayerIndex = r.activePlayerIndex;
@@ -214,7 +220,7 @@ export function useGameEngine() {
       // Check elimination
       const remainingPlayers = players.filter(p => p.cards.length > 0);
       let nextState = r.state;
-      if (remainingPlayers.length === 1) {
+      if (remainingPlayers.length <= 1) {
         nextState = 'GAME_OVER';
       } else {
         nextState = 'TURN_SELECTION';
@@ -259,6 +265,7 @@ export function useGameEngine() {
     addPlayer,
     removePlayer,
     startGame,
+    selectDeck,
     selectStat,
     selectDefendingCard,
     nextRound,

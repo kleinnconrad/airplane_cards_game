@@ -3,19 +3,21 @@ export interface CardStat {
   higherIsBetter: boolean;
 }
 
-export interface AirplaneCard {
+export interface GameCard {
   id: string;
   name: string;
   image: string;
   category: string;
-  stats: {
-    topSpeed_kmh: CardStat;
-    wingspan_m: CardStat;
-    range_km: CardStat;
-    passengers: CardStat;
-    thrust_kN: CardStat;
-    firstFlight_year: CardStat;
-  };
+  stats: Record<string, CardStat>;
+}
+
+export interface DeckConfig {
+  id: string;
+  name: string;
+  description: string;
+  statLabels: Record<string, string>;
+  statUnits: Record<string, string>;
+  cards: GameCard[];
 }
 
 export type GameState = 'LOBBY' | 'DEALING' | 'TURN_SELECTION' | 'DEFENDER_SELECTION' | 'REVEAL' | 'TRICK_EVALUATION' | 'GAME_OVER';
@@ -26,8 +28,8 @@ export interface Player {
   connected: boolean;
   avatar: string;
   cardsCount: number;
-  topCard: AirplaneCard | null;
-  cards: AirplaneCard[];
+  topCard: GameCard | null;
+  cards: GameCard[];
 }
 
 export interface Room {
@@ -37,7 +39,8 @@ export interface Room {
   activePlayerIndex: number;
   defendingPlayerIndex?: number;
   pendingDefenders?: number[];
-  pot: AirplaneCard[];
-  selectedStat: keyof AirplaneCard['stats'] | null;
+  deckId: string;
+  pot: GameCard[];
+  selectedStat: string | null;
   winners: number[];
 }
