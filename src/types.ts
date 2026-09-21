@@ -36,6 +36,7 @@ export interface Room {
   state: GameState;
   activePlayerIndex: number;
   defendingPlayerIndex?: number;
+  pendingDefenders?: number[];
   pot: AirplaneCard[];
   selectedStat: keyof AirplaneCard['stats'] | null;
   winners: number[];
