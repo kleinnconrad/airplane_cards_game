@@ -70,7 +70,8 @@ export function useGameEngine() {
       players: newPlayers,
       pot: [],
       selectedStat: null,
-      winners: []
+      winners: [],
+      pendingDefenders: []
     }));
   };
 
@@ -112,15 +113,19 @@ export function useGameEngine() {
       }
     }
 
-    const defenderIndex = players.findIndex((p, idx) => idx !== room.activePlayerIndex && p.cards.length > 0 && p.cards.length <= 3);
+    const pendingDefenders = players
+      .map((p, idx) => ({ p, idx }))
+      .filter(({ p, idx }) => idx !== room.activePlayerIndex && p.cards.length > 0 && p.cards.length <= 3)
+      .map(({ idx }) => idx);
 
-    if (defenderIndex !== -1) {
+    if (pendingDefenders.length > 0) {
       setRoom(r => ({
         ...r,
         players,
         state: 'DEFENDER_SELECTION',
         selectedStat: statKey,
-        defendingPlayerIndex: defenderIndex
+        defendingPlayerIndex: pendingDefenders[0],
+        pendingDefenders
       }));
     } else {
       const finalWinners = computeWinners(players, statKey);
@@ -132,10 +137,6 @@ export function useGameEngine() {
         selectedStat: statKey,
         winners: finalWinners
       }));
-
-      setTimeout(() => {
-        evaluateTrick(statKey, finalWinners);
-      }, 3000);
     }
   };
 
@@ -155,18 +156,26 @@ export function useGameEngine() {
       }
     }
 
-    const finalWinners = computeWinners(players, statKey);
+    const pendingDefenders = room.pendingDefenders ? room.pendingDefenders.slice(1) : [];
 
-    setRoom(r => ({
-      ...r,
-      players,
-      state: 'TRICK_EVALUATION',
-      winners: finalWinners
-    }));
+    if (pendingDefenders.length > 0) {
+      setRoom(r => ({
+        ...r,
+        players,
+        defendingPlayerIndex: pendingDefenders[0],
+        pendingDefenders
+      }));
+    } else {
+      const finalWinners = computeWinners(players, statKey);
 
-    setTimeout(() => {
-      evaluateTrick(statKey, finalWinners);
-    }, 3000);
+      setRoom(r => ({
+        ...r,
+        players,
+        state: 'TRICK_EVALUATION',
+        winners: finalWinners,
+        pendingDefenders: []
+      }));
+    }
   };
 
   const evaluateTrick = useCallback((statKey: keyof AirplaneCard['stats'], winners: number[]) => {
@@ -234,8 +243,15 @@ export function useGameEngine() {
       players: r.players.map(p => ({ ...p, cards: [], cardsCount: 0, topCard: null })),
       pot: [],
       selectedStat: null,
-      winners: []
+      winners: [],
+      pendingDefenders: []
     }));
+  };
+
+  const nextRound = () => {
+    if (room.state === 'TRICK_EVALUATION' && room.selectedStat) {
+      evaluateTrick(room.selectedStat, room.winners);
+    }
   };
 
   return {
@@ -245,6 +261,7 @@ export function useGameEngine() {
     startGame,
     selectStat,
     selectDefendingCard,
+    nextRound,
     resetGame
   };
 }
