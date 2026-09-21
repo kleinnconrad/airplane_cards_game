@@ -3,7 +3,7 @@ import { Game } from './components/Game';
 import { useGameEngine } from './useGameEngine';
 
 function App() {
-  const { room, addPlayer, removePlayer, startGame, selectStat, selectDefendingCard, resetGame } = useGameEngine();
+  const { room, addPlayer, removePlayer, startGame, selectStat, selectDefendingCard, nextRound, resetGame } = useGameEngine();
 
   if (room.state === 'LOBBY') {
     return (
@@ -21,6 +21,7 @@ function App() {
       room={room} 
       onSelectStat={selectStat} 
       onSelectDefendingCard={selectDefendingCard}
+      onNextRound={nextRound}
       onResetGame={resetGame}
     />
   );

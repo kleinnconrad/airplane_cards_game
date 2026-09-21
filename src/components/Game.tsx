@@ -7,10 +7,11 @@ interface Props {
   room: Room;
   onSelectStat: (stat: keyof AirplaneCard['stats'], cardId: string) => void;
   onSelectDefendingCard: (cardId: string) => void;
+  onNextRound: () => void;
   onResetGame: () => void;
 }
 
-export function Game({ room, onSelectStat, onSelectDefendingCard, onResetGame }: Props) {
+export function Game({ room, onSelectStat, onSelectDefendingCard, onNextRound, onResetGame }: Props) {
   const [showDefenderCards, setShowDefenderCards] = useState(false);
 
   useEffect(() => {
@@ -183,6 +184,21 @@ export function Game({ room, onSelectStat, onSelectDefendingCard, onResetGame }:
                 })}
               </AnimatePresence>
             </div>
+          )}
+
+          {room.state === 'TRICK_EVALUATION' && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-8 z-20 relative"
+            >
+              <button 
+                onClick={onNextRound}
+                className="bg-green-600 hover:bg-green-500 text-white font-bold py-4 px-12 rounded-xl text-xl shadow-[0_0_20px_rgba(34,197,94,0.5)] transition-transform hover:scale-105 border border-green-400"
+              >
+                Nächste Runde ➔
+              </button>
+            </motion.div>
           )}
 
         </div>

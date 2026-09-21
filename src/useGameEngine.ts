@@ -137,10 +137,6 @@ export function useGameEngine() {
         selectedStat: statKey,
         winners: finalWinners
       }));
-
-      setTimeout(() => {
-        evaluateTrick(statKey, finalWinners);
-      }, 3000);
     }
   };
 
@@ -179,10 +175,6 @@ export function useGameEngine() {
         winners: finalWinners,
         pendingDefenders: []
       }));
-
-      setTimeout(() => {
-        evaluateTrick(statKey, finalWinners);
-      }, 3000);
     }
   };
 
@@ -256,6 +248,12 @@ export function useGameEngine() {
     }));
   };
 
+  const nextRound = () => {
+    if (room.state === 'TRICK_EVALUATION' && room.selectedStat) {
+      evaluateTrick(room.selectedStat, room.winners);
+    }
+  };
+
   return {
     room,
     addPlayer,
@@ -263,6 +261,7 @@ export function useGameEngine() {
     startGame,
     selectStat,
     selectDefendingCard,
+    nextRound,
     resetGame
   };
 }
