@@ -1,19 +1,25 @@
-# Airplane card game (Flugzeug trumpfen)
+# Trumpfen Card Games (Flugzeuge & Giftige Tiere)
 
-A modern, highly tactical web-based "Hot-Seat" multiplayer implementation of the classic card game, featuring 32 spectacular AI-generated aircraft cards. Built with React, Vite, and Tailwind CSS.
+A modern, highly tactical web-based "Hot-Seat" multiplayer implementation of the classic top trumps card game. Play with friends locally on a single screen! Featuring two spectacular AI-generated decks: **Flugzeug Trumpfen** (32 aircraft) and **Giftige Tiere** (32 poisonous animals). Built with React, Vite, and Tailwind CSS.
 
-## The game
+## The Games
+
+Before starting, the lobby allows you to pick between two distinct decks:
+
+### 1. Flugzeug Trumpfen (Airplanes)
 Take control of 32 of the most iconic aircraft in aviation history — from historical pioneers like the Wright Flyer to modern giants like the Airbus A380 and supersonic legends like the SR-71 Blackbird.
 
-Players compete on a single screen (Hot-Seat) to win all cards by choosing the strongest statistics of their top cards.
+### 2. Giftige Tiere (Poisonous Animals)
+Dive into the deadly world of nature's most venomous and poisonous creatures. Play with 32 terrifying animals across categories like Snakes, Spiders, Marine Animals, and Amphibians.
 
 ## Game rules
 
 ### Classic mechanics
 1. **Dealing:** The deck of 32 cards is shuffled and distributed evenly among the players.
-2. **Turn selection:** The active player looks at their top card and selects a statistic (e.g., Top Speed, Range, Thrust) they believe will beat the opponent's top card.
-3. **Winning the trick:** The player with the better value wins both cards and places them at the bottom of their deck. The winner becomes the active player for the next round.
-   - *Note:* For all statistics, **Higher is Better**, with the exception of the **First Flight Year**, where **Lower (older) is Better**!
+2. **Turn selection:** The active player looks at their top card and selects a statistic they believe will beat the opponents' top cards.
+3. **Winning the trick:** The player with the better value wins all played cards and places them at the bottom of their deck. The winner becomes the active player for the next round.
+   - *Note on Values:* For most statistics, **Higher is Better**. 
+   - *Exceptions:* In the Airplanes deck, an older **First Flight Year** wins! In the Poisonous Animals deck, a lower **Toxicity (LD50 in mg/kg)** wins (because less venom is needed to be lethal)!
 
 ### Tie-Breaker (Stechen)
 If both players have the exact same value for a chosen statistic:

@@ -1,4 +1,4 @@
-import type { AirplaneCard } from '../types';
+import type { GameCard } from '../types';
 import { motion } from 'framer-motion';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -8,32 +8,16 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 interface Props {
-  card: AirplaneCard;
+  card: GameCard;
   isSelectable?: boolean;
   selectedStat?: string | null;
-  onSelectStat?: (statKey: keyof AirplaneCard['stats'], cardId: string) => void;
+  onSelectStat?: (statKey: string, cardId: string) => void;
   isWinner?: boolean;
+  statLabels: Record<string, string>;
+  statUnits: Record<string, string>;
 }
 
-const statLabels: Record<keyof AirplaneCard['stats'], string> = {
-  topSpeed_kmh: 'Höchstgeschwindigkeit',
-  wingspan_m: 'Spannweite',
-  range_km: 'Reichweite',
-  passengers: 'Max. Passagiere',
-  thrust_kN: 'Schubkraft',
-  firstFlight_year: 'Erstflug',
-};
-
-const statUnits: Record<keyof AirplaneCard['stats'], string> = {
-  topSpeed_kmh: ' km/h',
-  wingspan_m: ' m',
-  range_km: ' km',
-  passengers: '',
-  thrust_kN: ' kN',
-  firstFlight_year: '',
-};
-
-export function Card({ card, isSelectable, selectedStat, onSelectStat, isWinner }: Props) {
+export function Card({ card, isSelectable, selectedStat, onSelectStat, isWinner, statLabels, statUnits }: Props) {
   return (
     <motion.div 
       initial={{ scale: 0.9, opacity: 0 }}
@@ -51,7 +35,7 @@ export function Card({ card, isSelectable, selectedStat, onSelectStat, isWinner 
         <h2 className="text-xl font-black text-white mb-3 text-center">{card.name}</h2>
         
         <div className="flex-1 flex flex-col justify-between space-y-2">
-          {(Object.keys(card.stats) as Array<keyof AirplaneCard['stats']>).map((key) => {
+          {Object.keys(card.stats).map((key) => {
             const isSelected = selectedStat === key;
             return (
               <button

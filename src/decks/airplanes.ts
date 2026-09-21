@@ -1,22 +1,4 @@
-export interface CardStat {
-  value: number;
-  higherIsBetter: boolean;
-}
-
-export interface AirplaneCard {
-  id: string;
-  name: string;
-  image: string;
-  category: string;
-  stats: {
-    topSpeed_kmh: CardStat;
-    wingspan_m: CardStat;
-    range_km: CardStat;
-    passengers: CardStat;
-    thrust_kN: CardStat;
-    firstFlight_year: CardStat;
-  };
-}
+import type { GameCard, DeckConfig } from '../types';
 
 const speed = (v: number) => ({ value: v, higherIsBetter: true });
 const span = (v: number) => ({ value: v, higherIsBetter: true });
@@ -27,7 +9,7 @@ const year = (v: number) => ({ value: v, higherIsBetter: false });
 
 const getLocalImage = (id: string) => `${import.meta.env.BASE_URL}images/${id}.jpg`;
 
-export const deck: AirplaneCard[] = [
+const cards: GameCard[] = [
   {
     id: "a380", name: "Airbus A380", category: "Giganten", image: getLocalImage("a380"),
     stats: { topSpeed_kmh: speed(1185), wingspan_m: span(79.8), range_km: range(15200), passengers: pax(853), thrust_kN: thrust(1264), firstFlight_year: year(2005) }
@@ -157,3 +139,26 @@ export const deck: AirplaneCard[] = [
     stats: { topSpeed_kmh: speed(211), wingspan_m: span(48.0), range_km: range(1700), passengers: pax(100), thrust_kN: thrust(50), firstFlight_year: year(1929) }
   }
 ];
+
+export const airplanesDeck: DeckConfig = {
+  id: 'airplanes',
+  name: 'Flugzeug Trumpfen',
+  description: 'Das klassische Quartett mit 32 der bekanntesten Flugzeuge der Geschichte.',
+  statLabels: {
+    topSpeed_kmh: 'Höchstgeschwindigkeit',
+    wingspan_m: 'Spannweite',
+    range_km: 'Reichweite',
+    passengers: 'Max. Passagiere',
+    thrust_kN: 'Schubkraft',
+    firstFlight_year: 'Erstflug',
+  },
+  statUnits: {
+    topSpeed_kmh: ' km/h',
+    wingspan_m: ' m',
+    range_km: ' km',
+    passengers: '',
+    thrust_kN: ' kN',
+    firstFlight_year: '',
+  },
+  cards
+};
