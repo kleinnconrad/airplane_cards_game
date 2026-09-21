@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { Room, GameCard } from '../types';
+import type { Room } from '../types';
 import { Card } from './Card';
 import { motion, AnimatePresence } from 'framer-motion';
 import { availableDecks } from '../decks';
