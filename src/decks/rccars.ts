@@ -4,7 +4,7 @@ const speed = (v: number) => ({ value: v, higherIsBetter: true });
 const length = (v: number) => ({ value: v, higherIsBetter: true });
 const weight = (v: number) => ({ value: v, higherIsBetter: true });
 const cells = (v: number) => ({ value: v, higherIsBetter: true });
-const price = (v: number) => ({ value: v, higherIsBetter: false }); // Lower price is more affordable/better, or should it be higher? Let's use false so cheaper wins.
+const price = (v: number) => ({ value: v, higherIsBetter: true }); // Higher price is better
 
 const getLocalImage = (id: string) => `${import.meta.env.BASE_URL}images/${id}.jpg`;
 
