@@ -1,6 +1,58 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import type { GameCard, Player, Room } from './types';
 import { availableDecks } from './decks';
+
+const STORAGE_KEY = 'trumpfen-room-v1';
+
+const initialRoom: Room = {
+  id: 'LOCAL',
+  players: [],
+  state: 'LOBBY',
+  activePlayerIndex: 0,
+  pot: [],
+  selectedStat: null,
+  winners: [],
+  deckId: 'airplanes'
+};
+
+// Restores the room saved before a page reload. Cards are resolved by id against the
+// current deck data, so a saved game never shows outdated card data after a redeploy.
+// Returns the initial room if nothing is saved or the saved data does not fit the decks.
+const loadRoom = (): Room => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return initialRoom;
+    const saved = JSON.parse(raw) as Room;
+    const deck = availableDecks[saved.deckId as keyof typeof availableDecks];
+    if (!deck || !Array.isArray(saved.players) || !Array.isArray(saved.pot)) return initialRoom;
+
+    const cardsById = new Map(deck.cards.map(c => [c.id, c]));
+    const resolve = (c: GameCard) => {
+      const card = cardsById.get(c.id);
+      if (!card) throw new Error(`Unknown card ${c.id}`);
+      return card;
+    };
+
+    return {
+      ...saved,
+      players: saved.players.map(p => {
+        const cards = p.cards.map(resolve);
+        return { ...p, cards, cardsCount: cards.length, topCard: p.topCard ? resolve(p.topCard) : null };
+      }),
+      pot: saved.pot.map(resolve)
+    };
+  } catch {
+    return initialRoom;
+  }
+};
+
+const saveRoom = (room: Room) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(room));
+  } catch {
+    // Storage unavailable (e.g. private mode): the game still works, it just is not restored.
+  }
+};
 
 const shuffle = (array: any[]) => {
   let currentIndex = array.length, randomIndex;
@@ -14,16 +66,11 @@ const shuffle = (array: any[]) => {
 };
 
 export function useGameEngine() {
-  const [room, setRoom] = useState<Room>({
-    id: 'LOCAL',
-    players: [],
-    state: 'LOBBY',
-    activePlayerIndex: 0,
-    pot: [],
-    selectedStat: null,
-    winners: [],
-    deckId: 'airplanes'
-  });
+  const [room, setRoom] = useState<Room>(loadRoom);
+
+  useEffect(() => {
+    saveRoom(room);
+  }, [room]);
 
   const addPlayer = (name: string) => {
     setRoom(r => ({
