@@ -15,6 +15,7 @@ interface Props {
 export function Game({ room, onSelectStat, onSelectDefendingCard, onNextRound, onResetGame }: Props) {
   const [showDefenderCards, setShowDefenderCards] = useState(false);
   const [browsingPlayerId, setBrowsingPlayerId] = useState<string | null>(null);
+  const [confirmExit, setConfirmExit] = useState(false);
 
   useEffect(() => {
     if (room.state !== 'DEFENDER_SELECTION') {
@@ -51,7 +52,15 @@ export function Game({ room, onSelectStat, onSelectDefendingCard, onNextRound, o
     <div className="min-h-[100dvh] bg-slate-950 flex flex-col font-sans overflow-hidden">
       {/* Header */}
       <div className="bg-slate-900 border-b border-slate-800 p-4 flex justify-between items-center z-20 shadow-lg">
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 shrink-0 mr-2">
+          <button
+            onClick={() => setConfirmExit(true)}
+            className="flex items-center justify-center w-9 h-9 bg-slate-800 hover:bg-red-900/60 rounded-lg text-slate-400 hover:text-red-300 border border-slate-700 transition-colors"
+            title="Spiel beenden"
+            aria-label="Spiel beenden"
+          >
+            ✕
+          </button>
           <div className="text-2xl">✈️</div>
           <div className="font-black text-sky-500 tracking-tight hidden sm:block">Trumpfen</div>
         </div>
@@ -79,6 +88,38 @@ export function Game({ room, onSelectStat, onSelectDefendingCard, onNextRound, o
           })}
         </div>
       </div>
+
+      {/* Exit Confirmation: a second, deliberate step so the game is not ended by accident */}
+      <AnimatePresence>
+        {confirmExit && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[200] bg-slate-950/90 flex items-center justify-center p-4"
+          >
+            <div className="bg-slate-900 border-2 border-slate-700 rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
+              <h2 className="text-2xl font-bold text-white mb-2">Spiel beenden?</h2>
+              <p className="text-slate-400 mb-8">Der aktuelle Spielstand geht verloren. Die Spieler bleiben in der Lobby.</p>
+              <div className="flex flex-col gap-3">
+                <button
+                  autoFocus
+                  onClick={() => setConfirmExit(false)}
+                  className="bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 px-8 rounded-xl text-lg transition-colors"
+                >
+                  Weiterspielen
+                </button>
+                <button
+                  onClick={() => { setConfirmExit(false); onResetGame(); }}
+                  className="bg-transparent hover:bg-red-900/40 text-red-400 font-bold py-3 px-8 rounded-xl border border-red-800 transition-colors"
+                >
+                  Spiel beenden
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Main Game Area */}
       <div className="flex-1 flex flex-col w-full relative">
