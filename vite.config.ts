@@ -41,5 +41,5 @@ export default defineConfig({
   server: {
     port: 3000
   },
-  base: '/airplane_cards_game/'
+  base: '/app.family.airplanecards/'
 })
