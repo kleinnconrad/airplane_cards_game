@@ -1,6 +1,6 @@
 # Trumpfen Card Games (Flugzeuge & Giftige Tiere)
 
-A modern, highly tactical web-based "Hot-Seat" multiplayer implementation of the classic top trumps card game. Play with friends locally on a single screen! Featuring two spectacular AI-generated decks: **Flugzeug Trumpfen** (32 aircraft) and **Giftige Tiere** (32 poisonous animals). Built with React, Vite, and Tailwind CSS.
+A highly tactical web-based "Hot-Seat" multiplayer implementation of the classic top trumps card game. Play with friends locally on a single screen! Featuring two spectacular AI-generated decks: **Flugzeug Trumpfen** (32 aircraft) and **Giftige Tiere** (32 poisonous animals). Built with React, Vite, and Tailwind CSS.
 
 All card pictures are real photographs. Sources, authors and licenses are listed in [IMAGE_CREDITS.md](IMAGE_CREDITS.md).
 
