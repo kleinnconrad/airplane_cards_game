@@ -4,3 +4,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      # react and react-dom must always be on the exact same version,
+      # otherwise the app crashes at startup (React error #527)
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
